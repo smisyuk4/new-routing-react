@@ -19,7 +19,7 @@ export const Header = () => {
                 style={({ isActive }) => {
                   return {
                     fontWeight: isActive ? 'bold' : '',
-                    color: isActive ? 'red' : '',
+                    color: isActive ? 'rgb(107, 65, 107)' : '',
                   };
                 }}
               >
