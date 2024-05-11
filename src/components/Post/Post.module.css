@@ -8,7 +8,7 @@
   background-color: rgb(107, 65, 107);
 }
 
-.author {
+.title {
   margin-bottom: 20px;
   font-size: 24px;
   font-weight: 700;
@@ -16,7 +16,7 @@
   color: white;
 }
 
-.text {
+.message {
   font-size: 18px;
   text-align: center;
   color: white;

@@ -1,0 +1,41 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  width: 300px;
+  border-radius: 30px;
+  border: 1px solid black;
+}
+
+.label {
+  p {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+
+  input {
+    width: 100%;
+    padding: 5px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: 1px solid black;
+  }
+
+  textarea {
+    width: 100%;
+    padding: 5px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: 1px solid black;
+    resize: none;
+  }
+}
+
+.button {
+  width: 100%;
+  padding: 5px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: 1px solid black;
+}

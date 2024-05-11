@@ -10,7 +10,7 @@ export const Modal = ({ children }) => {
 
   return (
     <>
-      <div className={styles.backDrop} onClick={handleCloseModal} />
+      <div className={styles.backdrop} onClick={handleCloseModal} />
       <dialog open className={styles.modal}>{children}</dialog>
     </>
   );
