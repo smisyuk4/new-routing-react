@@ -34,12 +34,10 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm install
-
       - name: Build and set env
         env:
           VITE_PATH_TO_SERVER: ${{  vars.VITE_PATH_TO_SERVER  }}
         run: npm run build
-
       - name: Copy index.html to 404.html
         run: cp ./dist/index.html ./dist/404.html
       - name: Setup Pages
