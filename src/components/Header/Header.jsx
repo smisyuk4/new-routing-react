@@ -7,7 +7,7 @@ const path = [
   { to: '/posts', name: 'Posts' },
 ];
 
-export const Header = () => {
+export const Header = ({ handleCreateNewPost }) => {
   return (
     <header className={styles.header}>
       <nav id='sidebar'>
@@ -29,6 +29,15 @@ export const Header = () => {
           ))}
         </ul>
       </nav>
+
+      <button
+        onClick={handleCreateNewPost}
+        type='button'
+        className={styles.button}
+        aria-label='create new post'
+      >
+        New Post
+      </button>
     </header>
   );
 };

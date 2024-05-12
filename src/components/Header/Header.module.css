@@ -1,18 +1,35 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 10%;
+  padding: 1rem 0;
+  border-bottom: 2px solid black;
+}
+
 .navList {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 20px;
-  margin: 2rem 10%;
-  padding: 1rem 0;
 
   list-style: none;
   text-align: center;
-  border-bottom: 2px solid black;
 }
 
 .navList a {
   color: black;
   font-size: 20px;
   text-decoration: none;
+}
+
+.button {
+  padding: 10px;
+  color: white;
+  font-size: 18px;
+
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: rgb(107, 65, 107);
+  cursor: pointer;
 }
