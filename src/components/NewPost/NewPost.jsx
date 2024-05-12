@@ -1,8 +1,14 @@
-import { useState } from 'react';
+const { VITE_PATH_TO_SERVER, VITE_AUTH_TOKEN } = import.meta.env;
+
 import styles from './NewPost.module.css';
 
+const headers = {
+  'Content-Type': 'application/json',
+  Authorization: `Bearer ${VITE_AUTH_TOKEN}`,
+};
+
 export const NewPost = ({ setIsShowModal, handleAddNewPost }) => {
-  const handleClickSubmit = (event) => {
+  const handleClickSubmit = async (event) => {
     event.preventDefault();
 
     const data = new FormData(event.target);
@@ -12,7 +18,15 @@ export const NewPost = ({ setIsShowModal, handleAddNewPost }) => {
       message: data.get('message'),
     };
 
-    handleAddNewPost(post);
+    //handleAddNewPost(post);
+    const result = await fetch(`${VITE_PATH_TO_SERVER}/create-post`, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers,
+      body: JSON.stringify(post),
+    });
+
+    console.log(result);
     setIsShowModal((prev) => !prev);
   };
 

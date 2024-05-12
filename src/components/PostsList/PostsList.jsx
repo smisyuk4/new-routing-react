@@ -1,16 +1,34 @@
+import { useEffect, useState } from 'react';
 import { Post } from '../Post/Post';
 import { Modal } from '../Modal/Modal';
 import { NewPost } from '../NewPost/NewPost';
 import styles from './PostsList.module.css';
+const { VITE_PATH_TO_SERVER, VITE_AUTH_TOKEN } = import.meta.env;
 
-let data = [
-  //{ title: '1111', message: 'dsdfsdfsdf = dsdsdsd' },
-  //{ title: '2222222', message: 'sdfswerwrhrthdhbher = sdfsdfsdfsd' },
-];
+const headers = {
+  'Content-Type': 'application/json',
+  Authorization: `Bearer ${VITE_AUTH_TOKEN}`,
+};
 
 export const PostsList = ({ isShowModal, setIsShowModal }) => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch(`${VITE_PATH_TO_SERVER}/posts`, {
+        method: 'GET',
+        headers,
+      }).then((response) => {
+        return response.json();
+      });
+
+      setPosts((prev) => result);
+    };
+    fetchData();
+  }, []);
+
   const handleAddNewPost = (newPost) => {
-    data = [...data, newPost];
+    //posts = [...posts, newPost];
   };
   return (
     <>
@@ -23,15 +41,15 @@ export const PostsList = ({ isShowModal, setIsShowModal }) => {
         </Modal>
       )}
 
-      {data.length > 0 && (
+      {posts.length > 0 && (
         <ul className={styles.postsList}>
-          {data.map((item, idx) => (
+          {posts.map((item, idx) => (
             <Post key={idx} item={item} />
           ))}
         </ul>
       )}
 
-      {data.length === 0 && <p className={styles.error}>No posts</p>}
+      {posts.length === 0 && <p className={styles.error}>No posts</p>}
     </>
   );
 };
