@@ -15,6 +15,7 @@ export const NewPost = ({ setIsShowModal, handleAddNewPost }) => {
     handleAddNewPost(post);
     setIsShowModal((prev) => !prev);
   };
+
   return (
     <form className={styles.form} onSubmit={handleClickSubmit}>
       <label className={styles.label}>
@@ -27,18 +28,20 @@ export const NewPost = ({ setIsShowModal, handleAddNewPost }) => {
         <textarea id='message' name='message' rows={10} />
       </label>
 
-      <button
-        className={styles.button}
-        onClick={() => setIsShowModal((prev) => !prev)}
-        type='button'
-        aria-label='Cancel'
-      >
-        Cancel
-      </button>
+      <div>
+        <button
+          className={styles.button}
+          onClick={() => setIsShowModal((prev) => !prev)}
+          type='button'
+          aria-label='Cancel'
+        >
+          Cancel
+        </button>
 
-      <button className={styles.button} aria-label='Submit'>
-        Submit
-      </button>
+        <button className={styles.button} aria-label='Submit'>
+          Submit
+        </button>
+      </div>
     </form>
   );
 };

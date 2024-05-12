@@ -4,8 +4,8 @@ import { NewPost } from '../NewPost/NewPost';
 import styles from './PostsList.module.css';
 
 let data = [
-  { title: '1111', message: 'dsdfsdfsdf = dsdsdsd' },
-  { title: '2222222', message: 'sdfswerwrhrthdhbher = sdfsdfsdfsd' },
+  //{ title: '1111', message: 'dsdfsdfsdf = dsdsdsd' },
+  //{ title: '2222222', message: 'sdfswerwrhrthdhbher = sdfsdfsdfsd' },
 ];
 
 export const PostsList = ({ isShowModal, setIsShowModal }) => {
@@ -23,11 +23,15 @@ export const PostsList = ({ isShowModal, setIsShowModal }) => {
         </Modal>
       )}
 
-      <ul className={styles.postsList}>
-        {data.map((item, idx) => (
-          <Post key={idx} item={item} />
-        ))}
-      </ul>
+      {data.length > 0 && (
+        <ul className={styles.postsList}>
+          {data.map((item, idx) => (
+            <Post key={idx} item={item} />
+          ))}
+        </ul>
+      )}
+
+      {data.length === 0 && <p className={styles.error}>No posts</p>}
     </>
   );
 };

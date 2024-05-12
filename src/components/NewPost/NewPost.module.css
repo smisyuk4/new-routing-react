@@ -6,6 +6,12 @@
   width: 300px;
   border-radius: 30px;
   border: 1px solid black;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
 }
 
 .label {
@@ -39,4 +45,9 @@
   border-radius: 10px;
   border: 1px solid black;
   cursor: pointer;
+
+  &:last-of-type {
+    color: white;
+    background-color: rgb(107, 65, 107);
+  }
 }
