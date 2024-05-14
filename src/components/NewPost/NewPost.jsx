@@ -21,7 +21,6 @@ export const NewPost = ({ setIsShowModal, handleAddNewPost }) => {
     //handleAddNewPost(post);
     const result = await fetch(`${VITE_PATH_TO_SERVER}/create-post`, {
       method: 'POST',
-      mode: 'no-cors',
       headers,
       body: JSON.stringify(post),
     });
