@@ -1,6 +1,7 @@
-const { VITE_PATH_TO_SERVER, VITE_AUTH_TOKEN } = import.meta.env;
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
+import PropTypes from 'prop-types';
+const { VITE_PATH_TO_SERVER, VITE_AUTH_TOKEN } = import.meta.env;
 
 import styles from './NewPost.module.css';
 
@@ -72,4 +73,9 @@ export const NewPost = ({ setIsShowModal, setRefresh }) => {
       </div>
     </form>
   );
+};
+
+NewPost.propTypes = {
+  setIsShowModal: PropTypes.func.isRequired,
+  setRefresh: PropTypes.func.isRequired,
 };

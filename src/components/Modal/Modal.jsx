@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
 import styles from './Modal.module.css';
 
 export const Modal = ({ children, setIsShowModal }) => {
@@ -18,4 +20,9 @@ export const Modal = ({ children, setIsShowModal }) => {
       </dialog>
     </>
   );
+};
+
+Modal.propTypes = {
+  children: PropTypes.node.isRequired,
+  setIsShowModal: PropTypes.func.isRequired,
 };
