@@ -23,6 +23,11 @@
   text-decoration: none;
 }
 
+.buttonsWrp {
+  display: flex;
+  align-items: center;
+}
+
 .button {
   padding: 10px;
   color: white;
@@ -32,4 +37,26 @@
   border-radius: 10px;
   background-color: rgb(107, 65, 107);
   cursor: pointer;
+
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px,
+      rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  }
+}
+
+.authButton {
+  padding: 3px;
+  margin-left: 10px;
+  color: white;
+  font-size: 18px;
+
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: rgb(107, 65, 107);
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px,
+      rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  }
 }

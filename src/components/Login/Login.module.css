@@ -7,10 +7,9 @@
   border-radius: 30px;
   border: 1px solid black;
 
-  div {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
+  h2 {
+    font-weight: 600;
+    text-align: center;
   }
 }
 
@@ -46,7 +45,7 @@
   border: 1px solid black;
   cursor: pointer;
 
-  &:last-of-type {
+  &:first-of-type {
     color: rgb(255, 255, 255);
     background-color: rgb(107, 65, 107);
   }

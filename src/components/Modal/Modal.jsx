@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -5,6 +6,14 @@ import styles from './Modal.module.css';
 
 export const Modal = ({ children, setIsShowModal }) => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
 
   const handleCloseModal = () => {
     //navigate('..');
