@@ -12,6 +12,7 @@ const headers = {
 
 export const PostsList = ({ isShowModal, setIsShowModal }) => {
   const [posts, setPosts] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,21 +26,23 @@ export const PostsList = ({ isShowModal, setIsShowModal }) => {
       setPosts((prev) => result);
     };
     fetchData();
-  }, []);
+  }, [refresh]);
 
   return (
     <>
       {isShowModal && (
         <Modal setIsShowModal={setIsShowModal}>
-          <NewPost setIsShowModal={setIsShowModal} />
+          <NewPost setIsShowModal={setIsShowModal} setRefresh={setRefresh} />
         </Modal>
       )}
 
       {posts.length > 0 && (
         <ul className={styles.postsList}>
-          {posts.map((item, idx) => (
-            <Post key={idx} item={item} />
-          ))}
+          {posts
+            .sort((a, b) => b.post_id - a.post_id)
+            .map((item, idx) => (
+              <Post key={idx} item={item} />
+            ))}
         </ul>
       )}
 

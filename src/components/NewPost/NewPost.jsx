@@ -9,7 +9,7 @@ const headers = {
   Authorization: `Bearer ${VITE_AUTH_TOKEN}`,
 };
 
-export const NewPost = ({ setIsShowModal }) => {
+export const NewPost = ({ setIsShowModal, setRefresh }) => {
   const handleClickSubmit = async (event) => {
     event.preventDefault();
 
@@ -31,6 +31,7 @@ export const NewPost = ({ setIsShowModal }) => {
       Notify.success('New post added');
       Loading.remove();
       setIsShowModal((prev) => !prev);
+      setRefresh((prev) => !prev);
       return;
     }
 
