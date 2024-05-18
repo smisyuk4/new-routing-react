@@ -1,14 +1,16 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import PropTypes from 'prop-types';
 const { VITE_PATH_TO_SERVER } = import.meta.env;
 
 import { selectStateUser } from '../../redux/selectors';
+import { updateToken } from '../../redux/auth/authReducer';
 import styles from './NewPost.module.css';
 
 export const NewPost = ({ setIsShowModal, setRefresh }) => {
   const user = useSelector(selectStateUser);
+  const dispatch = useDispatch();
 
   const handleClickSubmit = async (event) => {
     event.preventDefault();
@@ -39,7 +41,19 @@ export const NewPost = ({ setIsShowModal, setRefresh }) => {
     }
 
     if (result?.status === 403) {
-      Notify.failure('Not authorized');
+      //Notify.failure('Not authorized');
+
+      const result = await fetch(`${VITE_PATH_TO_SERVER}/api-v1/user/token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ refresh_token: user?.refresh_token }),
+      });
+
+      console.log(result);
+      dispatch(updateToken(result));
+
       Loading.remove();
     }
 

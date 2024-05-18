@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
+import { Confirm } from 'notiflix';
 import PropTypes from 'prop-types';
 const { VITE_PATH_TO_SERVER } = import.meta.env;
 
@@ -35,20 +36,22 @@ export const Header = ({ handleCreateNewPost }) => {
       return;
     }
 
-    const result = await fetch(`${VITE_PATH_TO_SERVER}/user/logout`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ refresh_token: user.refresh_token }),
-    });
+    Confirm.show('LOGOUT', 'Really want to get out', 'YES', 'NO', async () => {
+      const result = await fetch(`${VITE_PATH_TO_SERVER}/user/logout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ refresh_token: user.refresh_token }),
+      });
 
-    if (result?.status === 204) {
-      Notify.success(`Goodbay`);
-      Loading.remove();
-      dispatch(removeUser());
-      return;
-    }
+      if (result?.status === 204) {
+        Notify.success(`Goodbay`);
+        Loading.remove();
+        dispatch(removeUser());
+        return;
+      }
+    });
 
     Loading.remove();
   };
