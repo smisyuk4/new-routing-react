@@ -27,17 +27,11 @@ export const PostsList = ({ isShowModal, setIsShowModal }) => {
     fetchData();
   }, []);
 
-  const handleAddNewPost = (newPost) => {
-    //posts = [...posts, newPost];
-  };
   return (
     <>
       {isShowModal && (
         <Modal setIsShowModal={setIsShowModal}>
-          <NewPost
-            setIsShowModal={setIsShowModal}
-            handleAddNewPost={handleAddNewPost}
-          />
+          <NewPost setIsShowModal={setIsShowModal} />
         </Modal>
       )}
 
