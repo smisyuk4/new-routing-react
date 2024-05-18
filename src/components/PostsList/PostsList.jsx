@@ -1,10 +1,8 @@
-import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import PropTypes from 'prop-types';
 const { VITE_PATH_TO_SERVER } = import.meta.env;
 
-import { selectStateUser } from '../../redux/selectors';
 import { Post } from '../Post';
 import { Modal } from '../Modal';
 import { NewPost } from '../NewPost';
@@ -14,7 +12,6 @@ export const PostsList = ({ isShowModal, setIsShowModal }) => {
   const [posts, setPosts] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
-  const user = useSelector(selectStateUser);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,7 +22,6 @@ export const PostsList = ({ isShowModal, setIsShowModal }) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.access_token}`,
         },
       }).then((response) => {
         return response.json();
