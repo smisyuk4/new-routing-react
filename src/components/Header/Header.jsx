@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import PropTypes from 'prop-types';
+const { VITE_PATH_TO_SERVER } = import.meta.env;
 
 import { Icon } from '../Icon';
 import { Modal } from '../Modal';
@@ -16,22 +19,51 @@ const path = [
 export const Header = ({ handleCreateNewPost }) => {
   const [isShowAuth, setIsShowAuth] = useState(false);
   const [typeAuth, setTypeAuth] = useState('login');
+  const [user, setUser] = useState(null);
 
   const getRandomNumber = (max) => {
     return Math.floor(Math.random() * max) + 1;
   };
 
-  const handleClickAuth = async () => {};
+  const handleClickAuthButton = async () => {
+    if (!user?.user_id) {
+      setIsShowAuth((prev) => !prev);
+      return;
+    }
+
+    const result = await fetch(`${VITE_PATH_TO_SERVER}/user/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ refresh_token: user.refresh_token }),
+    });
+
+    if (result?.status === 204) {
+      Notify.success(`Goodbay`);
+      Loading.remove();
+      setUser((prev) => null);
+      return;
+    }
+
+    Loading.remove();
+  };
+
   return (
     <>
       {isShowAuth && (
         <Modal setIsShowModal={setIsShowAuth}>
           {typeAuth === 'login' ? (
-            <Login setIsShowModal={setIsShowAuth} setTypeAuth={setTypeAuth} />
+            <Login
+              setIsShowModal={setIsShowAuth}
+              setTypeAuth={setTypeAuth}
+              setUser={setUser}
+            />
           ) : (
             <Register
               setIsShowModal={setIsShowAuth}
               setTypeAuth={setTypeAuth}
+              setUser={setUser}
             />
           )}
         </Modal>
@@ -69,13 +101,20 @@ export const Header = ({ handleCreateNewPost }) => {
           </button>
 
           <button
-            onClick={() => setIsShowAuth((prev) => !prev)}
+            onClick={handleClickAuthButton}
             type='button'
             className={styles.authButton}
             aria-label='auth'
           >
-            <Icon id={`avatar-0`} height={30} width={30} />
-            {/*<Icon id={`avatar-${getRandomNumber(5)}`} height={30} width={30} />*/}
+            {user?.user_id ? (
+              <Icon
+                id={`avatar-${getRandomNumber(5)}`}
+                height={30}
+                width={30}
+              />
+            ) : (
+              <Icon id={`avatar-0`} height={30} width={30} />
+            )}
           </button>
         </div>
       </header>

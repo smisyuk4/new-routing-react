@@ -5,7 +5,7 @@ const { VITE_PATH_TO_SERVER } = import.meta.env;
 
 import styles from './Login.module.css';
 
-export const Login = ({ setIsShowModal, setTypeAuth }) => {
+export const Login = ({ setIsShowModal, setTypeAuth, setUser }) => {
   const handleClickSubmit = async (event) => {
     event.preventDefault();
 
@@ -17,24 +17,28 @@ export const Login = ({ setIsShowModal, setTypeAuth }) => {
       password: data.get('password'),
     };
 
-    console.log(user);
-
     const result = await fetch(`${VITE_PATH_TO_SERVER}/user/login`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(user),
+    }).then((response) => {
+      return response.json();
     });
 
-    if (result?.status === 200) {
-      console.log(result);
-      Notify.success('Hello');
+    if (result?.user_id) {
+      Notify.success(`Hello, ${result.email}`);
       Loading.remove();
+      setUser((prev) => result);
       setIsShowModal((prev) => !prev);
       return;
     }
 
-    if (result?.status === 400) {
-      Notify.failure('password and email required or other errors');
+    if (result?.message) {
+      Notify.failure(`${result.message}`);
       Loading.remove();
+      return;
     }
 
     console.log(result);
@@ -74,4 +78,5 @@ export const Login = ({ setIsShowModal, setTypeAuth }) => {
 Login.propTypes = {
   setIsShowModal: PropTypes.func.isRequired,
   setTypeAuth: PropTypes.func.isRequired,
+  setUser: PropTypes.func.isRequired,
 };

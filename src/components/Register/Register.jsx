@@ -6,7 +6,7 @@ const { VITE_PATH_TO_SERVER } = import.meta.env;
 
 import styles from './Register.module.css';
 
-export const Register = ({ setIsShowModal, setTypeAuth }) => {
+export const Register = ({ setIsShowModal, setTypeAuth, setUser }) => {
   useEffect(() => {
     setTypeAuth((prev) => 'register');
 
@@ -26,24 +26,29 @@ export const Register = ({ setIsShowModal, setTypeAuth }) => {
       role: data.get('role'),
       password: data.get('password'),
     };
-    console.log(user);
 
     const result = await fetch(`${VITE_PATH_TO_SERVER}/user/register`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(user),
+    }).then((response) => {
+      return response.json();
     });
 
-    if (result?.status === 200) {
-      console.log(result);
-      Notify.success('Hello');
+    if (result?.user_id) {
+      Notify.success(`Hello, ${result.email}`);
       Loading.remove();
+      setUser((prev) => result);
       setIsShowModal((prev) => !prev);
       return;
     }
 
-    if (result?.status === 400) {
-      Notify.failure('password and email required or other errors');
+    if (result?.message) {
+      Notify.failure(`${result.message}`);
       Loading.remove();
+      return;
     }
 
     console.log(result);
@@ -93,4 +98,5 @@ export const Register = ({ setIsShowModal, setTypeAuth }) => {
 Register.propTypes = {
   setIsShowModal: PropTypes.func.isRequired,
   setTypeAuth: PropTypes.func.isRequired,
+  setUser: PropTypes.func.isRequired,
 };
