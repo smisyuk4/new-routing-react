@@ -1,19 +1,16 @@
+import { useSelector } from 'react-redux';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import PropTypes from 'prop-types';
-const { VITE_PATH_TO_SERVER, VITE_AUTH_TOKEN } = import.meta.env;
+const { VITE_PATH_TO_SERVER } = import.meta.env;
 
-import styles from './Post.module.css';
+import { selectStateUser } from '../../redux/selectors';
 import { Icon } from '../Icon';
-
-const headers = {
-  'Content-Type': 'application/json',
-  Authorization: `Bearer ${VITE_AUTH_TOKEN}`,
-};
+import styles from './Post.module.css';
 
 export const Post = ({ item, setRefresh }) => {
   const { post_id, title, message, user_id } = item;
-  const user = 16;
+  const user = useSelector(selectStateUser);
 
   const trimString = (string, number = 30) => {
     if (string.length <= number) {
@@ -28,7 +25,10 @@ export const Post = ({ item, setRefresh }) => {
 
     const result = await fetch(`${VITE_PATH_TO_SERVER}/delete-post`, {
       method: 'DELETE',
-      headers,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${user.access_token}`,
+      },
       body: JSON.stringify({ post_id }),
     });
 
@@ -50,7 +50,7 @@ export const Post = ({ item, setRefresh }) => {
 
   return (
     <li className={styles.post}>
-      {user_id === user && (
+      {user_id === user?.user_id && (
         <button
           className={styles.button}
           onClick={handleClickDeletePost}

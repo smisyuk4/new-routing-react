@@ -1,16 +1,15 @@
+import { useSelector } from 'react-redux';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import PropTypes from 'prop-types';
-const { VITE_PATH_TO_SERVER, VITE_AUTH_TOKEN } = import.meta.env;
+const { VITE_PATH_TO_SERVER } = import.meta.env;
 
+import { selectStateUser } from '../../redux/selectors';
 import styles from './NewPost.module.css';
 
-const headers = {
-  'Content-Type': 'application/json',
-  Authorization: `Bearer ${VITE_AUTH_TOKEN}`,
-};
-
 export const NewPost = ({ setIsShowModal, setRefresh }) => {
+  const user = useSelector(selectStateUser);
+
   const handleClickSubmit = async (event) => {
     event.preventDefault();
 
@@ -24,7 +23,10 @@ export const NewPost = ({ setIsShowModal, setRefresh }) => {
 
     const result = await fetch(`${VITE_PATH_TO_SERVER}/create-post`, {
       method: 'POST',
-      headers,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${user.access_token}`,
+      },
       body: JSON.stringify(post),
     });
 

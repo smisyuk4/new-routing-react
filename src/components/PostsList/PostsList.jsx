@@ -1,22 +1,20 @@
+import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import PropTypes from 'prop-types';
-const { VITE_PATH_TO_SERVER, VITE_AUTH_TOKEN } = import.meta.env;
+const { VITE_PATH_TO_SERVER } = import.meta.env;
 
+import { selectStateUser } from '../../redux/selectors';
 import { Post } from '../Post';
 import { Modal } from '../Modal';
 import { NewPost } from '../NewPost';
 import styles from './PostsList.module.css';
 
-const headers = {
-  'Content-Type': 'application/json',
-  Authorization: `Bearer ${VITE_AUTH_TOKEN}`,
-};
-
 export const PostsList = ({ isShowModal, setIsShowModal }) => {
   const [posts, setPosts] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [isLoad, setIsLoad] = useState(false);
+  const user = useSelector(selectStateUser);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,7 +23,10 @@ export const PostsList = ({ isShowModal, setIsShowModal }) => {
 
       const result = await fetch(`${VITE_PATH_TO_SERVER}/posts`, {
         method: 'GET',
-        headers,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.access_token}`,
+        },
       }).then((response) => {
         return response.json();
       });

@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import PropTypes from 'prop-types';
 const { VITE_PATH_TO_SERVER } = import.meta.env;
 
+import { selectStateUser } from '../../redux/selectors';
+import { removeUser } from '../../redux/auth/authReducer';
 import { Icon } from '../Icon';
 import { Modal } from '../Modal';
 import { Login } from '../Login';
@@ -19,7 +22,8 @@ const path = [
 export const Header = ({ handleCreateNewPost }) => {
   const [isShowAuth, setIsShowAuth] = useState(false);
   const [typeAuth, setTypeAuth] = useState('login');
-  const [user, setUser] = useState(null);
+  const user = useSelector(selectStateUser);
+  const dispatch = useDispatch();
 
   const getRandomNumber = (max) => {
     return Math.floor(Math.random() * max) + 1;
@@ -42,7 +46,7 @@ export const Header = ({ handleCreateNewPost }) => {
     if (result?.status === 204) {
       Notify.success(`Goodbay`);
       Loading.remove();
-      setUser((prev) => null);
+      dispatch(removeUser());
       return;
     }
 
@@ -54,16 +58,11 @@ export const Header = ({ handleCreateNewPost }) => {
       {isShowAuth && (
         <Modal setIsShowModal={setIsShowAuth}>
           {typeAuth === 'login' ? (
-            <Login
-              setIsShowModal={setIsShowAuth}
-              setTypeAuth={setTypeAuth}
-              setUser={setUser}
-            />
+            <Login setIsShowModal={setIsShowAuth} setTypeAuth={setTypeAuth} />
           ) : (
             <Register
               setIsShowModal={setIsShowAuth}
               setTypeAuth={setTypeAuth}
-              setUser={setUser}
             />
           )}
         </Modal>

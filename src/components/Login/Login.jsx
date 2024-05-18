@@ -1,11 +1,15 @@
+import { useDispatch } from 'react-redux';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import PropTypes from 'prop-types';
 const { VITE_PATH_TO_SERVER } = import.meta.env;
 
+import { updateUserProfile } from '../../redux/auth/authReducer';
 import styles from './Login.module.css';
 
-export const Login = ({ setIsShowModal, setTypeAuth, setUser }) => {
+export const Login = ({ setIsShowModal, setTypeAuth }) => {
+  const dispatch = useDispatch();
+
   const handleClickSubmit = async (event) => {
     event.preventDefault();
 
@@ -30,7 +34,7 @@ export const Login = ({ setIsShowModal, setTypeAuth, setUser }) => {
     if (result?.user_id) {
       Notify.success(`Hello, ${result.email}`);
       Loading.remove();
-      setUser((prev) => result);
+      dispatch(updateUserProfile(result));
       setIsShowModal((prev) => !prev);
       return;
     }
@@ -78,5 +82,4 @@ export const Login = ({ setIsShowModal, setTypeAuth, setUser }) => {
 Login.propTypes = {
   setIsShowModal: PropTypes.func.isRequired,
   setTypeAuth: PropTypes.func.isRequired,
-  setUser: PropTypes.func.isRequired,
 };
