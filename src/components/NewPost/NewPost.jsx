@@ -1,10 +1,20 @@
-import { useState } from 'react';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Loading } from 'notiflix/build/notiflix-loading-aio';
+import PropTypes from 'prop-types';
+const { VITE_PATH_TO_SERVER, VITE_AUTH_TOKEN } = import.meta.env;
+
 import styles from './NewPost.module.css';
 
-export const NewPost = ({ setIsShowModal, handleAddNewPost }) => {
-  const handleClickSubmit = (event) => {
+const headers = {
+  'Content-Type': 'application/json',
+  Authorization: `Bearer ${VITE_AUTH_TOKEN}`,
+};
+
+export const NewPost = ({ setIsShowModal, setRefresh }) => {
+  const handleClickSubmit = async (event) => {
     event.preventDefault();
 
+    Loading.standard('Loading...');
     const data = new FormData(event.target);
 
     const post = {
@@ -12,8 +22,27 @@ export const NewPost = ({ setIsShowModal, handleAddNewPost }) => {
       message: data.get('message'),
     };
 
-    handleAddNewPost(post);
-    setIsShowModal((prev) => !prev);
+    const result = await fetch(`${VITE_PATH_TO_SERVER}/create-post`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(post),
+    });
+
+    if (result?.status === 204) {
+      Notify.success('New post added');
+      Loading.remove();
+      setIsShowModal((prev) => !prev);
+      setRefresh((prev) => !prev);
+      return;
+    }
+
+    if (result?.status === 403) {
+      Notify.failure('Not authorized');
+      Loading.remove();
+    }
+
+    console.log(result);
+    Loading.remove();
   };
 
   return (
@@ -44,4 +73,9 @@ export const NewPost = ({ setIsShowModal, handleAddNewPost }) => {
       </div>
     </form>
   );
+};
+
+NewPost.propTypes = {
+  setIsShowModal: PropTypes.func.isRequired,
+  setRefresh: PropTypes.func.isRequired,
 };
